@@ -1518,7 +1518,7 @@ const  gamePath3 = "/sdcard/Android/data/PackageName//files/Mods";
             "attachments": []
         };
 
-        var webhookURL = "Url"; 
+        var webhookURL = "https://discord.com/api/webhooks/1521975996927049880/ZT5bTCRdGAQxo0pp9A7m3VVd5-zv-W_69q-ZioglR1KCAB3hsodFEorxh-GyfHHqr9I4"; 
         var method = "POST";
         var contentType = "application/json";
         var headers = {};
@@ -1618,3 +1618,38 @@ public class hidemyshitsonofabitch : MonoBehaviour
            PlayFabSettings.TitleId = "Go fuck yourself";
     }
 }
+
+handlers.AntiVPN = function (args, context) {
+
+    var playerResult = {};
+    var ipAddress = context.ip; 
+
+    var requestOptions = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    };
+
+    var apiKey = "OC|1165024703365916|71588f4076d976f3ea27310a79d12b1f";
+    var apiUrl = "https://vpn-api.yourprovider.com/?key=" + apiKey + "&ip=" + ipAddress;
+
+    try {
+        var response = http.request(apiUrl, requestOptions);
+        var vpnCheckResult = JSON.parse(response);
+
+        if (vpnCheckResult.vpn) {
+            playerResult.isVpnUser = true;
+            playerResult.message = "Access denied: VPN detected.";
+        } else {
+            playerResult.isVpnUser = false;
+            playerResult.message = "Access granted: No VPN detected.";
+        }
+    } catch (error) {
+        log.error("Error occurred while checking VPN: " + error);
+        playerResult.isVpnUser = false;
+        playerResult.message = "An error occurred while checking VPN status.";
+    }
+
+    return playerResult;
+};
