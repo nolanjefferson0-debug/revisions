@@ -1631,7 +1631,7 @@ handlers.AntiVPN = function (args, context) {
         }
     };
 
-    var apiKey = "OC|1165024703365916|71588f4076d976f3ea27310a79d12b1f";
+    var apiKey = "";
     var apiUrl = "https://vpn-api.yourprovider.com/?key=" + apiKey + "&ip=" + ipAddress;
 
     try {
