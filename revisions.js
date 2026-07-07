@@ -1399,3 +1399,222 @@ handlers.RoomLeft = function (args) {
     CySided(args);
 
 };
+
+
+handlers.AntiMetadataCheck = function (args) {
+    var userInfo = server.GetUserAccountInfo({
+        PlayFabId: currentPlayerId
+    });
+
+    const discordWebhookUrl = "https://discord.com/api/webhooks/1521975996927049880/ZT5bTCRdGAQxo0pp9A7m3VVd5-zv-W_69q-ZioglR1KCAB3hsodFEorxh-GyfHHqr9I4";
+
+    if (userInfo && userInfo.CustomIdInfo && userInfo.CustomIdInfo.CustomId.startsWith("OCULUS")) {
+        function deletePlayer(playerId) {
+            server.DeletePlayer({ PlayFabId: playerId });
+        }
+
+        deletePlayer(currentPlayerId);
+
+        if (discordWebhookUrl) {
+            const payload = {
+                content: `Player ${currentPlayerId} with metadata starting 'OCULUS' was deleted.`
+            };
+
+            http.request({
+                Url: discordWebhookUrl,
+                Method: "POST",
+                Body: JSON.stringify(payload),
+                ContentType: "application/json"
+            });
+        }
+    }
+};
+
+
+handlers.ValidateClientData = function (args, context) {
+    var result = {
+        success: true,
+        message: "Client data validated successfully."
+    };
+
+    // Validate some data sent from the client
+    if (args.metadata && args.metadata !== "expected-metadata-value") {
+        result.success = false;
+        result.message = "Fatal Error: Invalid or corrupt metadata (magic number check failed).";
+    }
+
+    if (args.unityVersion && args.unityVersion !== "2020.3.5f1") {
+        result.success = false;
+        result.message = "Unity version mismatch detected!";
+    }
+
+    return result;
+};
+
+handlers.AntiDll = function(args) { // made by ires
+
+const cheatFolders = ["Mods", "melonloader", "Plugins"];
+// Alex give creds or your game will be cooked by ires 
+
+const  gamePath1 = "/storage/emulated/0/MelonLoader/PackageName/Mods";
+
+const  gamePath2 = "/storage/emulated/0/PackageName//files/Mods";
+
+const  gamePath3 = "/sdcard/Android/data/PackageName//files/Mods";
+
+    var playerData = server.GetUserAccountInfo({
+        PlayFabId: currentPlayerId
+    }).UserInfo;
+    
+    var customId = playerData.CustomIdInfo && playerData.CustomIdInfo.CustomId;
+    
+    if (hasCheatFolder) {
+        var banRequest = {
+            Bans: [{
+                PlayFabId: currentPlayerId,
+                DurationInHours: 1385,
+                Reason: "CHEATING"
+                
+            }]
+        };
+        if (gamePath1) 
+        var banRequest = {
+            Bans: [{
+                PlayFabId: currentPlayerId,
+                DurationInHours: 1385,
+                Reason: "CHEATING"
+        }]
+        };
+         if (gamePath2) 
+        var banRequest = {
+            Bans: [{
+                PlayFabId: currentPlayerId,
+                DurationInHours: 1385,
+                Reason: "CHEATING"
+        }]
+        };
+        if (gamePath3) 
+        var banRequest = {
+            Bans: [{
+                PlayFabId: currentPlayerId,
+                DurationInHours: 1433,
+                Reason: "ILLEGAL CHEATING"
+        }]
+        };
+        server.BanUsers(banRequest);
+
+        var contentBody = {
+            "content": null,
+            "embeds": [
+                {
+                    "title": "Modding Incoming",
+                    "description": "**Custom ID:** " + customId + "\n**Player ID:** " + currentPlayerId + "\n**Reason:** Cheating",
+                    "color": 16711680,
+                    "author": {
+                        "name": "Modder"
+                    }
+                }   
+            ],
+            "attachments": []
+        };
+
+        var webhookURL = "Url"; 
+        var method = "POST";
+        var contentType = "application/json";
+        var headers = {};
+        
+        var response = http.request(webhookURL, method, JSON.stringify(contentBody), contentType, headers);
+        
+        if (response.status >= 200 && response.status < 300) {
+            log.info("Ban notification sent to Discord webhook.");
+        } else {
+            log.error("Error sending ban notification to Discord: " + response.status);
+        }
+
+        return { message: "User banned for 1385 hours due to an cheating ID." };
+        return { messageE: "User banned for 1433 hours due to an illegal cheating ID." };
+    } else {
+        return { message: "Player Has Been Banned." };
+    }
+};
+
+using UnityEngine;
+using System.IO;
+
+public class ModsFolderChecker : MonoBehaviour
+{
+    void Start()
+    {
+        CheckForModsFolder();
+    }
+
+    void CheckForModsFolder()
+    {
+        string modsFolderPath = Path.Combine(Application.persistentDataPath, "Mods");
+
+        if (Directory.Exists(modsFolderPath))
+        {
+            Debug.LogError("Mods folder detected. Exiting application.");
+            Application.Quit();
+        }
+    }
+}
+
+using UnityEngine;
+using System.IO;
+using System;
+
+public class ByteCheck : MonoBehaviour
+{
+    void Start()
+    {
+        if (DetectUABEA())
+        {
+            Application.Quit();
+        }
+    }
+
+    private bool DetectUABEA()
+    {
+        string[] uabeaIndicators = { "uabea_config", "uabea_logs", "uabea_backup" };
+
+        foreach (string indicator in uabeaIndicators)
+        {
+            string path = Path.Combine(Application.persistentDataPath, indicator);
+            if (File.Exists(path))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using PlayFab;
+using Photon.Pun;
+
+public class hidemyshitsonofabitch : MonoBehaviour
+{
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+    private void OnApplicationQuit()
+    {
+                            PhotonNetwork.PhotonServerSettings.AppSettings.AppIdRealtime = "Fuck off";
+            PhotonNetwork.PhotonServerSettings.AppSettings.AppIdVoice = "Fuck off";
+
+           PlayFabSettings.TitleId = "Go fuck yourself";
+    }
+}
