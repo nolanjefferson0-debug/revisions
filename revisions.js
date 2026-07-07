@@ -1255,7 +1255,7 @@ function checkSpamReporting(playerId) {
             server.BanUsers({
                 Bans: [{
                     PlayFabId: playerId,
-                    DurationInHours:2,
+                    DurationInHours:19,
                     Reason: "SPAM REPORTING"
                 }]
             });
@@ -1267,7 +1267,7 @@ function checkSpamReporting(playerId) {
 }
 
 function sendBanNotificationToDiscord(playFabId, numPlayersReported, playerInfo) {
-    var webhookURL = "DISCORD_URL"; 
+    var webhookURL = "https://discord.com/api/webhooks/1521976233712287835/pKrdTwVhJ5THBDCsAKynBWdctF9d-0vE1UmKp9v3ZfVP2ryYqU8iWagqLXR89u-wqwM7"; 
     var method = "post";
     var description = "**PlayFab ID:** " + playFabId + "\n**Reason:** SPAM REPORTING\n\n";
     
@@ -1293,7 +1293,7 @@ function sendBanNotificationToDiscord(playFabId, numPlayersReported, playerInfo)
         "attachments": []
     };
 
-  var url = "DISCORD_URL";
+  var url = "https://discord.com/api/webhooks/1521976233712287835/pKrdTwVhJ5THBDCsAKynBWdctF9d-0vE1UmKp9v3ZfVP2ryYqU8iWagqLXR89u-wqwM7";
     var method = "post";
     var contentType = "application/json";
     var headers = {};
@@ -1337,7 +1337,7 @@ if (args.EvCode.toString() == "50") {
 			}],
 			"attachments": []
 		};
-        var staffUrl = "DISCORD_URL";
+        var staffUrl = "https://discord.com/api/webhooks/1521976233712287835/pKrdTwVhJ5THBDCsAKynBWdctF9d-0vE1UmKp9v3ZfVP2ryYqU8iWagqLXR89u-wqwM7";
         var method = "post";
         var contentType = "application/json";
         var headers = {};
@@ -1355,7 +1355,7 @@ if (args.EvCode.toString() == "50") {
 			}],
 			"attachments": []
 		};
-        var url = "DISCORD_URL";
+        var url = "https://discord.com/api/webhooks/1521976233712287835/pKrdTwVhJ5THBDCsAKynBWdctF9d-0vE1UmKp9v3ZfVP2ryYqU8iWagqLXR89u-wqwM7";
         var method = "post";
         var contentType = "application/json";
         var headers = {};
